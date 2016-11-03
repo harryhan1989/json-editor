@@ -1,3 +1,3 @@
-JSONEditor.defaults.templates.swig = function() {
+JSONEditorSchema.defaults.templates.swig = function() {
   return window.swig;
 };

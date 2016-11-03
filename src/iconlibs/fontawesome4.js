@@ -1,4 +1,4 @@
-JSONEditor.defaults.iconlibs.fontawesome4 = JSONEditor.AbstractIconLib.extend({
+JSONEditorSchema.defaults.iconlibs.fontawesome4 = JSONEditorSchema.AbstractIconLib.extend({
   mapping: {
     collapse: 'caret-square-o-down',
     expand: 'caret-square-o-right',

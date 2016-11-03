@@ -1,4 +1,4 @@
-JSONEditor.defaults.themes.bootstrap3 = JSONEditor.AbstractTheme.extend({
+JSONEditorSchema.defaults.themes.bootstrap3 = JSONEditorSchema.AbstractTheme.extend({
   getSelectInput: function(options) {
     var el = this._super(options);
     el.className += 'form-control';

@@ -1,4 +1,4 @@
-JSONEditor.defaults.editors.multiselect = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.multiselect = JSONEditorSchema.AbstractEditor.extend({
   preBuild: function() {
     this._super();
     var i;
@@ -96,7 +96,7 @@ JSONEditor.defaults.editors.multiselect = JSONEditor.AbstractEditor.extend({
   },
   setupSelect2: function() {
     if(window.jQuery && window.jQuery.fn && window.jQuery.fn.select2) {
-        var options = window.jQuery.extend({},JSONEditor.plugins.select2);
+        var options = window.jQuery.extend({},JSONEditorSchema.plugins.select2);
         if(this.schema.options && this.schema.options.select2_options) options = $extend(options,this.schema.options.select2_options);
         this.select2 = window.jQuery(this.input).select2(options);
         var self = this;

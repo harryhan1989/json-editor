@@ -211,26 +211,26 @@ var $triggerc = function(el,event) {
   el.dispatchEvent(e);
 };
 
-var JSONEditor = function(element,options) {
+var JSONEditorSchema = function(element,options) {
   if (!(element instanceof Element)) {
     throw new Error('element should be an instance of Element');
   }
-  options = $extend({},JSONEditor.defaults.options,options||{});
+  options = $extend({},JSONEditorSchema.defaults.options,options||{});
   this.element = element;
   this.options = options;
   this.init();
 };
-JSONEditor.prototype = {
+JSONEditorSchema.prototype = {
   // necessary since we remove the ctor property by doing a literal assignment. Without this
   // the $isplainobject function will think that this is a plain object.
-  constructor: JSONEditor,
+  constructor: JSONEditorSchema,
   init: function() {
     var self = this;
     
     this.ready = false;
 
-    var theme_class = JSONEditor.defaults.themes[this.options.theme || JSONEditor.defaults.theme];
-    if(!theme_class) throw "Unknown theme " + (this.options.theme || JSONEditor.defaults.theme);
+    var theme_class = JSONEditorSchema.defaults.themes[this.options.theme || JSONEditorSchema.defaults.theme];
+    if(!theme_class) throw "Unknown theme " + (this.options.theme || JSONEditorSchema.defaults.theme);
     
     this.schema = this.options.schema;
     this.theme = new theme_class();
@@ -239,13 +239,13 @@ JSONEditor.prototype = {
     this.uuid = 0;
     this.__data = {};
     
-    var icon_class = JSONEditor.defaults.iconlibs[this.options.iconlib || JSONEditor.defaults.iconlib];
+    var icon_class = JSONEditorSchema.defaults.iconlibs[this.options.iconlib || JSONEditorSchema.defaults.iconlib];
     if(icon_class) this.iconlib = new icon_class();
 
     this.root_container = this.theme.getContainer();
     this.element.appendChild(this.root_container);
     
-    this.translate = this.options.translate || JSONEditor.defaults.translate;
+    this.translate = this.options.translate || JSONEditorSchema.defaults.translate;
 
     // Fetch all external refs via ajax
     this._loadExternalRefs(this.schema, function() {
@@ -256,7 +256,7 @@ JSONEditor.prototype = {
       if(self.options.custom_validators) {
         validator_options.custom_validators = self.options.custom_validators;
       }
-      self.validator = new JSONEditor.Validator(self,null,validator_options);
+      self.validator = new JSONEditorSchema.Validator(self,null,validator_options);
       
       // Create the root editor
       var editor_class = self.getEditorClass(self.schema);
@@ -388,10 +388,10 @@ JSONEditor.prototype = {
 
     schema = this.expandSchema(schema);
 
-    $each(JSONEditor.defaults.resolvers,function(i,resolver) {
+    $each(JSONEditorSchema.defaults.resolvers,function(i,resolver) {
       var tmp = resolver(schema);
       if(tmp) {
-        if(JSONEditor.defaults.editors[tmp]) {
+        if(JSONEditorSchema.defaults.editors[tmp]) {
           classname = tmp;
           return false;
         }
@@ -399,9 +399,9 @@ JSONEditor.prototype = {
     });
 
     if(!classname) throw "Unknown editor for schema "+JSON.stringify(schema);
-    if(!JSONEditor.defaults.editors[classname]) throw "Unknown editor "+classname;
+    if(!JSONEditorSchema.defaults.editors[classname]) throw "Unknown editor "+classname;
 
-    return JSONEditor.defaults.editors[classname];
+    return JSONEditorSchema.defaults.editors[classname];
   },
   createEditor: function(editor_class, options) {
     options = $extend({},editor_class.options||{},options);
@@ -436,14 +436,14 @@ JSONEditor.prototype = {
     return this;
   },
   compileTemplate: function(template, name) {
-    name = name || JSONEditor.defaults.template;
+    name = name || JSONEditorSchema.defaults.template;
 
     var engine;
 
     // Specifying a preset engine
     if(typeof name === 'string') {
-      if(!JSONEditor.defaults.templates[name]) throw "Unknown template engine "+name;
-      engine = JSONEditor.defaults.templates[name]();
+      if(!JSONEditorSchema.defaults.templates[name]) throw "Unknown template engine "+name;
+      engine = JSONEditorSchema.defaults.templates[name]();
 
       if(!engine) throw "Template engine "+name+" missing required library.";
     }
@@ -798,7 +798,7 @@ JSONEditor.prototype = {
   }
 };
 
-JSONEditor.defaults = {
+JSONEditorSchema.defaults = {
   themes: {},
   templates: {},
   iconlibs: {},
@@ -808,12 +808,12 @@ JSONEditor.defaults = {
   custom_validators: []
 };
 
-JSONEditor.Validator = Class.extend({
+JSONEditorSchema.Validator = Class.extend({
   init: function(jsoneditor,schema,options) {
     this.jsoneditor = jsoneditor;
     this.schema = schema || this.jsoneditor.schema;
     this.options = options || {};
-    this.translate = this.jsoneditor.translate || JSONEditor.defaults.translate;
+    this.translate = this.jsoneditor.translate || JSONEditorSchema.defaults.translate;
   },
   validate: function(value) {
     return this._validateSchema(this.schema, value);
@@ -1353,7 +1353,7 @@ JSONEditor.Validator = Class.extend({
     }
 
     // Custom type validation (global)
-    $each(JSONEditor.defaults.custom_validators,function(i,validator) {
+    $each(JSONEditorSchema.defaults.custom_validators,function(i,validator) {
       errors = errors.concat(validator.call(self,schema,value,path));
     });
     // Custom type validation (instance specific)
@@ -1387,7 +1387,7 @@ JSONEditor.Validator = Class.extend({
 /**
  * All editors should extend from this class
  */
-JSONEditor.AbstractEditor = Class.extend({
+JSONEditorSchema.AbstractEditor = Class.extend({
   onChildEditorChange: function(editor) {
     this.onChange(true);
   },
@@ -1421,7 +1421,7 @@ JSONEditor.AbstractEditor = Class.extend({
     this.template_engine = this.jsoneditor.template;
     this.iconlib = this.jsoneditor.iconlib;
     
-    this.translate = this.jsoneditor.translate || JSONEditor.defaults.translate;
+    this.translate = this.jsoneditor.translate || JSONEditorSchema.defaults.translate;
 
     this.original_schema = options.schema;
     this.schema = this.jsoneditor.expandSchema(this.original_schema);
@@ -1856,7 +1856,7 @@ JSONEditor.AbstractEditor = Class.extend({
   }
 });
 
-JSONEditor.defaults.editors["null"] = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors["null"] = JSONEditorSchema.AbstractEditor.extend({
   getValue: function() {
     return null;
   },
@@ -1868,7 +1868,7 @@ JSONEditor.defaults.editors["null"] = JSONEditor.AbstractEditor.extend({
   }
 });
 
-JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.string = JSONEditorSchema.AbstractEditor.extend({
   register: function() {
     this._super();
     if(!this.input) return;
@@ -2170,7 +2170,7 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
           emoticonsEnabled: false,
           width: '100%',
           height: 300
-        },JSONEditor.plugins.sceditor,self.options.sceditor_options||{});
+        },JSONEditorSchema.plugins.sceditor,self.options.sceditor_options||{});
         
         window.jQuery(self.input).sceditor(options);
         
@@ -2194,7 +2194,7 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
         this.input.parentNode.insertBefore(this.epiceditor_container,this.input);
         this.input.style.display = 'none';
         
-        options = $extend({},JSONEditor.plugins.epiceditor,{
+        options = $extend({},JSONEditorSchema.plugins.epiceditor,{
           container: this.epiceditor_container,
           clientSideStorage: false
         });
@@ -2230,7 +2230,7 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
         this.ace_editor.setValue(this.getValue());
         
         // The theme
-        if(JSONEditor.plugins.ace.theme) this.ace_editor.setTheme('ace/theme/'+JSONEditor.plugins.ace.theme);
+        if(JSONEditorSchema.plugins.ace.theme) this.ace_editor.setTheme('ace/theme/'+JSONEditorSchema.plugins.ace.theme);
         // The mode
         mode = window.ace.require("ace/mode/"+mode);
         if(mode) this.ace_editor.getSession().setMode(new mode.Mode());
@@ -2317,7 +2317,7 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
   }
 });
 
-JSONEditor.defaults.editors.number = JSONEditor.defaults.editors.string.extend({
+JSONEditorSchema.defaults.editors.number = JSONEditorSchema.defaults.editors.string.extend({
   sanitize: function(value) {
     return (value+"").replace(/[^0-9\.\-eE]/g,'');
   },
@@ -2329,7 +2329,7 @@ JSONEditor.defaults.editors.number = JSONEditor.defaults.editors.string.extend({
   }
 });
 
-JSONEditor.defaults.editors.integer = JSONEditor.defaults.editors.number.extend({
+JSONEditorSchema.defaults.editors.integer = JSONEditorSchema.defaults.editors.number.extend({
   sanitize: function(value) {
     value = value + "";
     return value.replace(/[^0-9\-]/g,'');
@@ -2339,7 +2339,7 @@ JSONEditor.defaults.editors.integer = JSONEditor.defaults.editors.number.extend(
   }
 });
 
-JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.object = JSONEditorSchema.AbstractEditor.extend({
   getDefault: function() {
     return $extend({},this.schema["default"] || {});
   },
@@ -3226,7 +3226,7 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
   }
 });
 
-JSONEditor.defaults.editors.array = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.array = JSONEditorSchema.AbstractEditor.extend({
   getDefault: function() {
     return this.schema["default"] || [];
   },
@@ -3935,7 +3935,7 @@ JSONEditor.defaults.editors.array = JSONEditor.AbstractEditor.extend({
   }
 });
 
-JSONEditor.defaults.editors.table = JSONEditor.defaults.editors.array.extend({
+JSONEditorSchema.defaults.editors.table = JSONEditorSchema.defaults.editors.array.extend({
   register: function() {
     this._super();
     if(this.rows) {
@@ -4400,7 +4400,7 @@ JSONEditor.defaults.editors.table = JSONEditor.defaults.editors.array.extend({
 });
 
 // Multiple Editor (for when `type` is an array)
-JSONEditor.defaults.editors.multiple = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.multiple = JSONEditorSchema.AbstractEditor.extend({
   register: function() {
     if(this.editors) {
       for(var i=0; i<this.editors.length; i++) {
@@ -4609,7 +4609,7 @@ JSONEditor.defaults.editors.multiple = JSONEditor.AbstractEditor.extend({
         }
       }
 
-      self.validators[i] = new JSONEditor.Validator(self.jsoneditor,schema,validator_options);
+      self.validators[i] = new JSONEditorSchema.Validator(self.jsoneditor,schema,validator_options);
     });
 
     this.switchEditor(0);
@@ -4688,7 +4688,7 @@ JSONEditor.defaults.editors.multiple = JSONEditor.AbstractEditor.extend({
 });
 
 // Enum Editor (used for objects and arrays with enumerated values)
-JSONEditor.defaults.editors["enum"] = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors["enum"] = JSONEditorSchema.AbstractEditor.extend({
   getNumColumns: function() {
     return 4;
   },
@@ -4816,7 +4816,7 @@ JSONEditor.defaults.editors["enum"] = JSONEditor.AbstractEditor.extend({
   }
 });
 
-JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.select = JSONEditorSchema.AbstractEditor.extend({
   setValue: function(value,initial) {
     value = this.typecast(value||'');
 
@@ -5018,7 +5018,7 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
   setupSelect2: function() {
     // If the Select2 library is loaded use it when we have lots of items
     if(window.jQuery && window.jQuery.fn && window.jQuery.fn.select2 && (this.enum_options.length > 2 || (this.enum_options.length && this.enumSource))) {
-      var options = $extend({},JSONEditor.plugins.select2);
+      var options = $extend({},JSONEditorSchema.plugins.select2);
       if(this.schema.options && this.schema.options.select2_options) options = $extend(options,this.schema.options.select2_options);
       this.select2 = window.jQuery(this.input).select2(options);
       var self = this;
@@ -5172,7 +5172,7 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
   }
 });
 
-JSONEditor.defaults.editors.selectize = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.selectize = JSONEditorSchema.AbstractEditor.extend({
   setValue: function(value,initial) {
     value = this.typecast(value||'');
 
@@ -5357,7 +5357,7 @@ JSONEditor.defaults.editors.selectize = JSONEditor.AbstractEditor.extend({
     // If the Selectize library is loaded use it when we have lots of items
     var self = this;
     if(window.jQuery && window.jQuery.fn && window.jQuery.fn.selectize && (this.enum_options.length >= 2 || (this.enum_options.length && this.enumSource))) {
-      var options = $extend({},JSONEditor.plugins.selectize);
+      var options = $extend({},JSONEditorSchema.plugins.selectize);
       if(this.schema.options && this.schema.options.selectize_options) options = $extend(options,this.schema.options.selectize_options);
       this.selectize = window.jQuery(this.input).selectize($extend(options,
       {
@@ -5520,7 +5520,7 @@ JSONEditor.defaults.editors.selectize = JSONEditor.AbstractEditor.extend({
   }
 });
 
-JSONEditor.defaults.editors.multiselect = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.multiselect = JSONEditorSchema.AbstractEditor.extend({
   preBuild: function() {
     this._super();
     var i;
@@ -5618,7 +5618,7 @@ JSONEditor.defaults.editors.multiselect = JSONEditor.AbstractEditor.extend({
   },
   setupSelect2: function() {
     if(window.jQuery && window.jQuery.fn && window.jQuery.fn.select2) {
-        var options = window.jQuery.extend({},JSONEditor.plugins.select2);
+        var options = window.jQuery.extend({},JSONEditorSchema.plugins.select2);
         if(this.schema.options && this.schema.options.select2_options) options = $extend(options,this.schema.options.select2_options);
         this.select2 = window.jQuery(this.input).select2(options);
         var self = this;
@@ -5723,7 +5723,7 @@ JSONEditor.defaults.editors.multiselect = JSONEditor.AbstractEditor.extend({
   }
 });
 
-JSONEditor.defaults.editors.base64 = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.base64 = JSONEditorSchema.AbstractEditor.extend({
   getNumColumns: function() {
     return 4;
   },
@@ -5817,7 +5817,7 @@ JSONEditor.defaults.editors.base64 = JSONEditor.AbstractEditor.extend({
   }
 });
 
-JSONEditor.defaults.editors.upload = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.upload = JSONEditorSchema.AbstractEditor.extend({
   getNumColumns: function() {
     return 4;
   },
@@ -5952,7 +5952,7 @@ JSONEditor.defaults.editors.upload = JSONEditor.AbstractEditor.extend({
   }
 });
 
-JSONEditor.defaults.editors.checkbox = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.checkbox = JSONEditorSchema.AbstractEditor.extend({
   setValue: function(value,initial) {
     this.value = !!value;
     this.input.checked = this.value;
@@ -6014,7 +6014,7 @@ JSONEditor.defaults.editors.checkbox = JSONEditor.AbstractEditor.extend({
   }
 });
 
-JSONEditor.defaults.editors.arraySelectize = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.arraySelectize = JSONEditorSchema.AbstractEditor.extend({
   build: function() {
     this.title = this.theme.getFormInputLabel(this.getTitle());
 
@@ -6119,7 +6119,7 @@ var matchKey = (function () {
   else if (elem.oMatchesSelector) return 'oMatchesSelector';
 })();
 
-JSONEditor.AbstractTheme = Class.extend({
+JSONEditorSchema.AbstractTheme = Class.extend({
   getContainer: function() {
     return document.createElement('div');
   },
@@ -6459,7 +6459,7 @@ JSONEditor.AbstractTheme = Class.extend({
   }
 });
 
-JSONEditor.defaults.themes.bootstrap2 = JSONEditor.AbstractTheme.extend({
+JSONEditorSchema.defaults.themes.bootstrap2 = JSONEditorSchema.AbstractTheme.extend({
   getRangeInput: function(min, max, step) {
     // TODO: use bootstrap slider
     return this._super(min, max, step);
@@ -6641,7 +6641,7 @@ JSONEditor.defaults.themes.bootstrap2 = JSONEditor.AbstractTheme.extend({
   }
 });
 
-JSONEditor.defaults.themes.bootstrap3 = JSONEditor.AbstractTheme.extend({
+JSONEditorSchema.defaults.themes.bootstrap3 = JSONEditorSchema.AbstractTheme.extend({
   getSelectInput: function(options) {
     var el = this._super(options);
     el.className += 'form-control';
@@ -6812,7 +6812,7 @@ JSONEditor.defaults.themes.bootstrap3 = JSONEditor.AbstractTheme.extend({
 });
 
 // Base Foundation theme
-JSONEditor.defaults.themes.foundation = JSONEditor.AbstractTheme.extend({
+JSONEditorSchema.defaults.themes.foundation = JSONEditorSchema.AbstractTheme.extend({
   getChildEditorHolder: function() {
     var el = document.createElement('div');
     el.style.marginBottom = '15px';
@@ -6917,7 +6917,7 @@ JSONEditor.defaults.themes.foundation = JSONEditor.AbstractTheme.extend({
 });
 
 // Foundation 3 Specific Theme
-JSONEditor.defaults.themes.foundation3 = JSONEditor.defaults.themes.foundation.extend({
+JSONEditorSchema.defaults.themes.foundation3 = JSONEditorSchema.defaults.themes.foundation.extend({
   getHeaderButtonHolder: function() {
     var el = this._super();
     el.style.fontSize = '.6em';
@@ -6967,7 +6967,7 @@ JSONEditor.defaults.themes.foundation3 = JSONEditor.defaults.themes.foundation.e
 });
 
 // Foundation 4 Specific Theme
-JSONEditor.defaults.themes.foundation4 = JSONEditor.defaults.themes.foundation.extend({
+JSONEditorSchema.defaults.themes.foundation4 = JSONEditorSchema.defaults.themes.foundation.extend({
   getHeaderButtonHolder: function() {
     var el = this._super();
     el.style.fontSize = '.6em';
@@ -6989,7 +6989,7 @@ JSONEditor.defaults.themes.foundation4 = JSONEditor.defaults.themes.foundation.e
 });
 
 // Foundation 5 Specific Theme
-JSONEditor.defaults.themes.foundation5 = JSONEditor.defaults.themes.foundation.extend({
+JSONEditorSchema.defaults.themes.foundation5 = JSONEditorSchema.defaults.themes.foundation.extend({
   getFormInputDescription: function(text) {
     var el = this._super(text);
     el.style.fontSize = '.8rem';
@@ -7036,7 +7036,7 @@ JSONEditor.defaults.themes.foundation5 = JSONEditor.defaults.themes.foundation.e
   }
 });
 
-JSONEditor.defaults.themes.foundation6 = JSONEditor.defaults.themes.foundation5.extend({
+JSONEditorSchema.defaults.themes.foundation6 = JSONEditorSchema.defaults.themes.foundation5.extend({
   getIndentedPanel: function() {
     var el = document.createElement('div');
     el.className = 'callout secondary';
@@ -7098,7 +7098,7 @@ JSONEditor.defaults.themes.foundation6 = JSONEditor.defaults.themes.foundation5.
   },
 });
 
-JSONEditor.defaults.themes.html = JSONEditor.AbstractTheme.extend({
+JSONEditorSchema.defaults.themes.html = JSONEditorSchema.AbstractTheme.extend({
   getFormInputLabel: function(text) {
     var el = this._super(text);
     el.style.display = 'block';
@@ -7181,7 +7181,7 @@ JSONEditor.defaults.themes.html = JSONEditor.AbstractTheme.extend({
   }
 });
 
-JSONEditor.defaults.themes.jqueryui = JSONEditor.AbstractTheme.extend({
+JSONEditorSchema.defaults.themes.jqueryui = JSONEditorSchema.AbstractTheme.extend({
   getTable: function() {
     var el = this._super();
     el.setAttribute('cellpadding',5);
@@ -7338,7 +7338,7 @@ JSONEditor.defaults.themes.jqueryui = JSONEditor.AbstractTheme.extend({
   }
 });
 
-JSONEditor.defaults.themes.barebones = JSONEditor.AbstractTheme.extend({
+JSONEditorSchema.defaults.themes.barebones = JSONEditorSchema.AbstractTheme.extend({
     getFormInputLabel: function (text) {
         var el = this._super(text);
         return el;
@@ -7399,7 +7399,7 @@ JSONEditor.defaults.themes.barebones = JSONEditor.AbstractTheme.extend({
     }
 });
 
-JSONEditor.AbstractIconLib = Class.extend({
+JSONEditorSchema.AbstractIconLib = Class.extend({
   mapping: {
     collapse: '',
     expand: '',
@@ -7427,7 +7427,7 @@ JSONEditor.AbstractIconLib = Class.extend({
   }
 });
 
-JSONEditor.defaults.iconlibs.bootstrap2 = JSONEditor.AbstractIconLib.extend({
+JSONEditorSchema.defaults.iconlibs.bootstrap2 = JSONEditorSchema.AbstractIconLib.extend({
   mapping: {
     collapse: 'chevron-down',
     expand: 'chevron-up',
@@ -7442,7 +7442,7 @@ JSONEditor.defaults.iconlibs.bootstrap2 = JSONEditor.AbstractIconLib.extend({
   icon_prefix: 'icon-'
 });
 
-JSONEditor.defaults.iconlibs.bootstrap3 = JSONEditor.AbstractIconLib.extend({
+JSONEditorSchema.defaults.iconlibs.bootstrap3 = JSONEditorSchema.AbstractIconLib.extend({
   mapping: {
     collapse: 'chevron-down',
     expand: 'chevron-right',
@@ -7457,7 +7457,7 @@ JSONEditor.defaults.iconlibs.bootstrap3 = JSONEditor.AbstractIconLib.extend({
   icon_prefix: 'glyphicon glyphicon-'
 });
 
-JSONEditor.defaults.iconlibs.fontawesome3 = JSONEditor.AbstractIconLib.extend({
+JSONEditorSchema.defaults.iconlibs.fontawesome3 = JSONEditorSchema.AbstractIconLib.extend({
   mapping: {
     collapse: 'chevron-down',
     expand: 'chevron-right',
@@ -7472,7 +7472,7 @@ JSONEditor.defaults.iconlibs.fontawesome3 = JSONEditor.AbstractIconLib.extend({
   icon_prefix: 'icon-'
 });
 
-JSONEditor.defaults.iconlibs.fontawesome4 = JSONEditor.AbstractIconLib.extend({
+JSONEditorSchema.defaults.iconlibs.fontawesome4 = JSONEditorSchema.AbstractIconLib.extend({
   mapping: {
     collapse: 'caret-square-o-down',
     expand: 'caret-square-o-right',
@@ -7487,7 +7487,7 @@ JSONEditor.defaults.iconlibs.fontawesome4 = JSONEditor.AbstractIconLib.extend({
   icon_prefix: 'fa fa-'
 });
 
-JSONEditor.defaults.iconlibs.foundation2 = JSONEditor.AbstractIconLib.extend({
+JSONEditorSchema.defaults.iconlibs.foundation2 = JSONEditorSchema.AbstractIconLib.extend({
   mapping: {
     collapse: 'minus',
     expand: 'plus',
@@ -7502,7 +7502,7 @@ JSONEditor.defaults.iconlibs.foundation2 = JSONEditor.AbstractIconLib.extend({
   icon_prefix: 'foundicon-'
 });
 
-JSONEditor.defaults.iconlibs.foundation3 = JSONEditor.AbstractIconLib.extend({
+JSONEditorSchema.defaults.iconlibs.foundation3 = JSONEditorSchema.AbstractIconLib.extend({
   mapping: {
     collapse: 'minus',
     expand: 'plus',
@@ -7517,7 +7517,7 @@ JSONEditor.defaults.iconlibs.foundation3 = JSONEditor.AbstractIconLib.extend({
   icon_prefix: 'fi-'
 });
 
-JSONEditor.defaults.iconlibs.jqueryui = JSONEditor.AbstractIconLib.extend({
+JSONEditorSchema.defaults.iconlibs.jqueryui = JSONEditorSchema.AbstractIconLib.extend({
   mapping: {
     collapse: 'triangle-1-s',
     expand: 'triangle-1-e',
@@ -7532,7 +7532,7 @@ JSONEditor.defaults.iconlibs.jqueryui = JSONEditor.AbstractIconLib.extend({
   icon_prefix: 'ui-icon ui-icon-'
 });
 
-JSONEditor.defaults.templates["default"] = function() {
+JSONEditorSchema.defaults.templates["default"] = function() {
   return {
     compile: function(template) {
       var matches = template.match(/{{\s*([a-zA-Z0-9\-_ \.]+)\s*}}/g);
@@ -7590,7 +7590,7 @@ JSONEditor.defaults.templates["default"] = function() {
   };
 };
 
-JSONEditor.defaults.templates.ejs = function() {
+JSONEditorSchema.defaults.templates.ejs = function() {
   if(!window.EJS) return false;
 
   return {
@@ -7606,11 +7606,11 @@ JSONEditor.defaults.templates.ejs = function() {
   };
 };
 
-JSONEditor.defaults.templates.handlebars = function() {
+JSONEditorSchema.defaults.templates.handlebars = function() {
   return window.Handlebars;
 };
 
-JSONEditor.defaults.templates.hogan = function() {
+JSONEditorSchema.defaults.templates.hogan = function() {
   if(!window.Hogan) return false;
 
   return {
@@ -7623,7 +7623,7 @@ JSONEditor.defaults.templates.hogan = function() {
   };
 };
 
-JSONEditor.defaults.templates.markup = function() {
+JSONEditorSchema.defaults.templates.markup = function() {
   if(!window.Mark || !window.Mark.up) return false;
 
   return {
@@ -7635,7 +7635,7 @@ JSONEditor.defaults.templates.markup = function() {
   };
 };
 
-JSONEditor.defaults.templates.mustache = function() {
+JSONEditorSchema.defaults.templates.mustache = function() {
   if(!window.Mustache) return false;
 
   return {
@@ -7647,11 +7647,11 @@ JSONEditor.defaults.templates.mustache = function() {
   };
 };
 
-JSONEditor.defaults.templates.swig = function() {
+JSONEditorSchema.defaults.templates.swig = function() {
   return window.swig;
 };
 
-JSONEditor.defaults.templates.underscore = function() {
+JSONEditorSchema.defaults.templates.underscore = function() {
   if(!window._) return false;
 
   return {
@@ -7664,20 +7664,20 @@ JSONEditor.defaults.templates.underscore = function() {
 };
 
 // Set the default theme
-JSONEditor.defaults.theme = 'html';
+JSONEditorSchema.defaults.theme = 'html';
 
 // Set the default template engine
-JSONEditor.defaults.template = 'default';
+JSONEditorSchema.defaults.template = 'default';
 
 // Default options when initializing JSON Editor
-JSONEditor.defaults.options = {};
+JSONEditorSchema.defaults.options = {};
 
 // String translate function
-JSONEditor.defaults.translate = function(key, variables) {
-  var lang = JSONEditor.defaults.languages[JSONEditor.defaults.language];
-  if(!lang) throw "Unknown language "+JSONEditor.defaults.language;
+JSONEditorSchema.defaults.translate = function(key, variables) {
+  var lang = JSONEditorSchema.defaults.languages[JSONEditorSchema.defaults.language];
+  if(!lang) throw "Unknown language "+JSONEditorSchema.defaults.language;
   
-  var string = lang[key] || JSONEditor.defaults.languages[JSONEditor.defaults.default_language][key];
+  var string = lang[key] || JSONEditorSchema.defaults.languages[JSONEditorSchema.defaults.default_language][key];
   
   if(typeof string === "undefined") throw "Unknown translate string "+key;
   
@@ -7691,9 +7691,9 @@ JSONEditor.defaults.translate = function(key, variables) {
 };
 
 // Translation strings and default languages
-JSONEditor.defaults.default_language = 'en';
-JSONEditor.defaults.language = JSONEditor.defaults.default_language;
-JSONEditor.defaults.languages.en = {
+JSONEditorSchema.defaults.default_language = 'en';
+JSONEditorSchema.defaults.language = JSONEditorSchema.defaults.default_language;
+JSONEditorSchema.defaults.languages.en = {
   /**
    * When a property is not set
    */
@@ -7870,7 +7870,7 @@ JSONEditor.defaults.languages.en = {
 };
 
 // Miscellaneous Plugin Settings
-JSONEditor.plugins = {
+JSONEditorSchema.plugins = {
   ace: {
     theme: ''
   },
@@ -7888,91 +7888,91 @@ JSONEditor.plugins = {
 };
 
 // Default per-editor options
-$each(JSONEditor.defaults.editors, function(i,editor) {
-  JSONEditor.defaults.editors[i].options = editor.options || {};
+$each(JSONEditorSchema.defaults.editors, function(i,editor) {
+  JSONEditorSchema.defaults.editors[i].options = editor.options || {};
 });
 
 // Set the default resolvers
 // Use "multiple" as a fall back for everything
-JSONEditor.defaults.resolvers.unshift(function(schema) {
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
   if(typeof schema.type !== "string") return "multiple";
 });
 // If the type is not set but properties are defined, we can infer the type is actually object
-JSONEditor.defaults.resolvers.unshift(function(schema) {
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
   // If the schema is a simple type
   if(!schema.type && schema.properties ) return "object";
 });
 // If the type is set and it's a basic type, use the primitive editor
-JSONEditor.defaults.resolvers.unshift(function(schema) {
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
   // If the schema is a simple type
   if(typeof schema.type === "string") return schema.type;
 });
 // Boolean editors
-JSONEditor.defaults.resolvers.unshift(function(schema) {
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
   if(schema.type === 'boolean') {
     // If explicitly set to 'checkbox', use that
     if(schema.format === "checkbox" || (schema.options && schema.options.checkbox)) {
       return "checkbox";
     }
     // Otherwise, default to select menu
-    return (JSONEditor.plugins.selectize.enable) ? 'selectize' : 'select';
+    return (JSONEditorSchema.plugins.selectize.enable) ? 'selectize' : 'select';
   }
 });
 // Use the multiple editor for schemas where the `type` is set to "any"
-JSONEditor.defaults.resolvers.unshift(function(schema) {
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
   // If the schema can be of any type
   if(schema.type === "any") return "multiple";
 });
 // Editor for base64 encoded files
-JSONEditor.defaults.resolvers.unshift(function(schema) {
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
   // If the schema can be of any type
   if(schema.type === "string" && schema.media && schema.media.binaryEncoding==="base64") {
     return "base64";
   }
 });
 // Editor for uploading files
-JSONEditor.defaults.resolvers.unshift(function(schema) {
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
   if(schema.type === "string" && schema.format === "url" && schema.options && schema.options.upload === true) {
     if(window.FileReader) return "upload";
   }
 });
 // Use the table editor for arrays with the format set to `table`
-JSONEditor.defaults.resolvers.unshift(function(schema) {
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
   // Type `array` with format set to `table`
   if(schema.type == "array" && schema.format == "table") {
     return "table";
   }
 });
 // Use the `select` editor for dynamic enumSource enums
-JSONEditor.defaults.resolvers.unshift(function(schema) {
-  if(schema.enumSource) return (JSONEditor.plugins.selectize.enable) ? 'selectize' : 'select';
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
+  if(schema.enumSource) return (JSONEditorSchema.plugins.selectize.enable) ? 'selectize' : 'select';
 });
 // Use the `enum` or `select` editors for schemas with enumerated properties
-JSONEditor.defaults.resolvers.unshift(function(schema) {
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
   if(schema["enum"]) {
     if(schema.type === "array" || schema.type === "object") {
       return "enum";
     }
     else if(schema.type === "number" || schema.type === "integer" || schema.type === "string") {
-      return (JSONEditor.plugins.selectize.enable) ? 'selectize' : 'select';
+      return (JSONEditorSchema.plugins.selectize.enable) ? 'selectize' : 'select';
     }
   }
 });
 // Specialized editors for arrays of strings
-JSONEditor.defaults.resolvers.unshift(function(schema) {
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
   if(schema.type === "array" && schema.items && !(Array.isArray(schema.items)) && schema.uniqueItems && ['string','number','integer'].indexOf(schema.items.type) >= 0) {
     // For enumerated strings, number, or integers
     if(schema.items.enum) {
       return 'multiselect';
     }
     // For non-enumerated strings (tag editor)
-    else if(JSONEditor.plugins.selectize.enable && schema.items.type === "string") {
+    else if(JSONEditorSchema.plugins.selectize.enable && schema.items.type === "string") {
       return 'arraySelectize';
     }
   }
 });
 // Use the multiple editor for schemas with `oneOf` set
-JSONEditor.defaults.resolvers.unshift(function(schema) {
+JSONEditorSchema.defaults.resolvers.unshift(function(schema) {
   // If this schema uses `oneOf` or `anyOf`
   if(schema.oneOf || schema.anyOf) return "multiple";
 });
@@ -7983,7 +7983,7 @@ JSONEditor.defaults.resolvers.unshift(function(schema) {
 (function() {
   if(window.jQuery || window.Zepto) {
     var $ = window.jQuery || window.Zepto;
-    $.jsoneditor = JSONEditor.defaults;
+    $.jsoneditor = JSONEditorSchema.defaults;
     
     $.fn.jsoneditor = function(options) {
       var self = this;
@@ -8025,7 +8025,7 @@ JSONEditor.defaults.resolvers.unshift(function(schema) {
         }
         
         // Create editor
-        editor = new JSONEditor(this.get(0),options);
+        editor = new JSONEditorSchema(this.get(0),options);
         this.data('jsoneditor',editor);
         
         // Setup event listeners
@@ -8042,7 +8042,7 @@ JSONEditor.defaults.resolvers.unshift(function(schema) {
   }
 })();
 
-  window.JSONEditor = JSONEditor;
+  window.JSONEditorSchema = JSONEditorSchema;
 })();
 
 //# sourceMappingURL=jsoneditor.js.map

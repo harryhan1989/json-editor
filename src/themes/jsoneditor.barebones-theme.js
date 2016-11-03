@@ -1,4 +1,4 @@
-JSONEditor.defaults.themes.barebones = JSONEditor.AbstractTheme.extend({
+JSONEditorSchema.defaults.themes.barebones = JSONEditorSchema.AbstractTheme.extend({
     getFormInputLabel: function (text) {
         var el = this._super(text);
         return el;

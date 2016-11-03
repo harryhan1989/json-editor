@@ -1,4 +1,4 @@
-JSONEditor.defaults.templates.ejs = function() {
+JSONEditorSchema.defaults.templates.ejs = function() {
   if(!window.EJS) return false;
 
   return {

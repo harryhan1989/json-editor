@@ -1,4 +1,4 @@
-JSONEditor.defaults.themes.jqueryui = JSONEditor.AbstractTheme.extend({
+JSONEditorSchema.defaults.themes.jqueryui = JSONEditorSchema.AbstractTheme.extend({
   getTable: function() {
     var el = this._super();
     el.setAttribute('cellpadding',5);

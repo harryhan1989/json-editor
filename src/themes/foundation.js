@@ -1,5 +1,5 @@
 // Base Foundation theme
-JSONEditor.defaults.themes.foundation = JSONEditor.AbstractTheme.extend({
+JSONEditorSchema.defaults.themes.foundation = JSONEditorSchema.AbstractTheme.extend({
   getChildEditorHolder: function() {
     var el = document.createElement('div');
     el.style.marginBottom = '15px';
@@ -104,7 +104,7 @@ JSONEditor.defaults.themes.foundation = JSONEditor.AbstractTheme.extend({
 });
 
 // Foundation 3 Specific Theme
-JSONEditor.defaults.themes.foundation3 = JSONEditor.defaults.themes.foundation.extend({
+JSONEditorSchema.defaults.themes.foundation3 = JSONEditorSchema.defaults.themes.foundation.extend({
   getHeaderButtonHolder: function() {
     var el = this._super();
     el.style.fontSize = '.6em';
@@ -154,7 +154,7 @@ JSONEditor.defaults.themes.foundation3 = JSONEditor.defaults.themes.foundation.e
 });
 
 // Foundation 4 Specific Theme
-JSONEditor.defaults.themes.foundation4 = JSONEditor.defaults.themes.foundation.extend({
+JSONEditorSchema.defaults.themes.foundation4 = JSONEditorSchema.defaults.themes.foundation.extend({
   getHeaderButtonHolder: function() {
     var el = this._super();
     el.style.fontSize = '.6em';
@@ -176,7 +176,7 @@ JSONEditor.defaults.themes.foundation4 = JSONEditor.defaults.themes.foundation.e
 });
 
 // Foundation 5 Specific Theme
-JSONEditor.defaults.themes.foundation5 = JSONEditor.defaults.themes.foundation.extend({
+JSONEditorSchema.defaults.themes.foundation5 = JSONEditorSchema.defaults.themes.foundation.extend({
   getFormInputDescription: function(text) {
     var el = this._super(text);
     el.style.fontSize = '.8rem';
@@ -223,7 +223,7 @@ JSONEditor.defaults.themes.foundation5 = JSONEditor.defaults.themes.foundation.e
   }
 });
 
-JSONEditor.defaults.themes.foundation6 = JSONEditor.defaults.themes.foundation5.extend({
+JSONEditorSchema.defaults.themes.foundation6 = JSONEditorSchema.defaults.themes.foundation5.extend({
   getIndentedPanel: function() {
     var el = document.createElement('div');
     el.className = 'callout secondary';

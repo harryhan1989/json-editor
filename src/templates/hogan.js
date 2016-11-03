@@ -1,4 +1,4 @@
-JSONEditor.defaults.templates.hogan = function() {
+JSONEditorSchema.defaults.templates.hogan = function() {
   if(!window.Hogan) return false;
 
   return {

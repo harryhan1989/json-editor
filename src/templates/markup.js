@@ -1,4 +1,4 @@
-JSONEditor.defaults.templates.markup = function() {
+JSONEditorSchema.defaults.templates.markup = function() {
   if(!window.Mark || !window.Mark.up) return false;
 
   return {

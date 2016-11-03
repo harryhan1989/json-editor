@@ -119,10 +119,10 @@
             <div class='span12 col-md-12 columns twelve large-12'>
                 <h2>Code</h2>
       <pre><code>// Set default options
-JSONEditor.defaults.options.theme = 'bootstrap2';
+JSONEditorSchema.defaults.options.theme = 'bootstrap2';
 
 // Initialize the editor
-var editor = new JSONEditor(document.getElementById("editor_holder"),{
+var editor = new JSONEditorSchema(document.getElementById("editor_holder"),{
   schema: {
       type: "object",
       properties: {
@@ -265,14 +265,14 @@ editor.on("change",  function() {
         url += '?schema='+LZString.compressToBase64(JSON.stringify(schema));
         url += '&value='+LZString.compressToBase64(JSON.stringify(jsoneditor.getValue()));
 
-        for(var i in JSONEditor.defaults.options) {
-            if(!JSONEditor.defaults.options.hasOwnProperty(i)) continue;
-            if(JSONEditor.defaults.options[i]===false) continue;
-            else if(JSONEditor.defaults.options[i]===true) {
+        for(var i in JSONEditorSchema.defaults.options) {
+            if(!JSONEditorSchema.defaults.options.hasOwnProperty(i)) continue;
+            if(JSONEditorSchema.defaults.options[i]===false) continue;
+            else if(JSONEditorSchema.defaults.options[i]===true) {
                 url += '&'+i;
             }
             else {
-                url += '&'+i+'='+JSONEditor.defaults.options[i];
+                url += '&'+i+'='+JSONEditorSchema.defaults.options[i];
             }
         }
 
@@ -284,7 +284,7 @@ editor.on("change",  function() {
         window.startval = undefined;
 
         if(jsoneditor) jsoneditor.destroy();
-        jsoneditor = new JSONEditor($editor,{
+        jsoneditor = new JSONEditorSchema($editor,{
             schema: schema,
             startval: startval
         });
@@ -352,10 +352,10 @@ editor.on("change",  function() {
             document.getElementById('theme_switcher').value = theme;
         }
 
-        JSONEditor.defaults.options.theme = theme;
+        JSONEditorSchema.defaults.options.theme = theme;
 
         document.getElementById('theme_stylesheet').href = mapping[theme];
-        document.getElementById('theme_switcher').value = JSONEditor.defaults.options.theme;
+        document.getElementById('theme_switcher').value = JSONEditorSchema.defaults.options.theme;
 
         if(!no_reload) reload(true);
     };
@@ -371,10 +371,10 @@ editor.on("change",  function() {
             fontawesome4: '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'
         };
 
-        JSONEditor.defaults.options.iconlib = iconlib;
+        JSONEditorSchema.defaults.options.iconlib = iconlib;
 
         document.getElementById('icon_stylesheet').href = mapping[iconlib] || '';
-        document.getElementById('icon_switcher').value = JSONEditor.defaults.options.iconlib;
+        document.getElementById('icon_switcher').value = JSONEditorSchema.defaults.options.iconlib;
 
         if(!no_reload) reload(true);
     };
@@ -382,7 +382,7 @@ editor.on("change",  function() {
     var refreshBooleanOptions = function(no_reload) {
         var boolean_options = document.getElementById('boolean_options').children;
         for(var i=0; i<boolean_options.length; i++) {
-            JSONEditor.defaults.options[boolean_options[i].value] = boolean_options[i].selected;
+            JSONEditorSchema.defaults.options[boolean_options[i].value] = boolean_options[i].selected;
         }
         if(!no_reload) reload(true);
     };
@@ -395,11 +395,11 @@ editor.on("change",  function() {
         setIconlib(this.value);
     });
     document.getElementById('object_layout').addEventListener('change',function() {
-       JSONEditor.defaults.options.object_layout = this.value;
+       JSONEditorSchema.defaults.options.object_layout = this.value;
         reload(true);
     });
     document.getElementById('show_errors').addEventListener('change',function() {
-       JSONEditor.defaults.options.show_errors = this.value;
+       JSONEditorSchema.defaults.options.show_errors = this.value;
         reload(true);
     });
     document.getElementById('boolean_options').addEventListener('change',function() {
@@ -417,10 +417,10 @@ editor.on("change",  function() {
     setIconlib((window.location.href.match(/[?&]iconlib=([^&]*)/)||[null,'fontawesome4'])[1], true);
 
     document.getElementById('object_layout').value = (window.location.href.match(/[?&]object_layout=([^&]+)/)||[])[1] || 'normal';
-    JSONEditor.defaults.options.object_layout = document.getElementById('object_layout').value;
+    JSONEditorSchema.defaults.options.object_layout = document.getElementById('object_layout').value;
 
     document.getElementById('show_errors').value = (window.location.href.match(/[?&]show_errors=([^&]+)/)||[])[1] || 'interaction';
-    JSONEditor.defaults.options.show_errors = document.getElementById('show_errors').value;
+    JSONEditorSchema.defaults.options.show_errors = document.getElementById('show_errors').value;
 
     var boolean_options = document.getElementById('boolean_options').children;
     for(var i=0; i<boolean_options.length; i++) {

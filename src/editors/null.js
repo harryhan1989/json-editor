@@ -1,4 +1,4 @@
-JSONEditor.defaults.editors["null"] = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors["null"] = JSONEditorSchema.AbstractEditor.extend({
   getValue: function() {
     return null;
   },

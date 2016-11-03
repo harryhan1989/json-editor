@@ -1,3 +1,3 @@
-JSONEditor.defaults.templates.handlebars = function() {
+JSONEditorSchema.defaults.templates.handlebars = function() {
   return window.Handlebars;
 };

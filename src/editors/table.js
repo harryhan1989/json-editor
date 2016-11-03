@@ -1,4 +1,4 @@
-JSONEditor.defaults.editors.table = JSONEditor.defaults.editors.array.extend({
+JSONEditorSchema.defaults.editors.table = JSONEditorSchema.defaults.editors.array.extend({
   register: function() {
     this._super();
     if(this.rows) {

@@ -1,4 +1,4 @@
-JSONEditor.defaults.templates.mustache = function() {
+JSONEditorSchema.defaults.templates.mustache = function() {
   if(!window.Mustache) return false;
 
   return {

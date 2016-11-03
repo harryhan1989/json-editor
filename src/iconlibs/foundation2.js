@@ -1,4 +1,4 @@
-JSONEditor.defaults.iconlibs.foundation2 = JSONEditor.AbstractIconLib.extend({
+JSONEditorSchema.defaults.iconlibs.foundation2 = JSONEditorSchema.AbstractIconLib.extend({
   mapping: {
     collapse: 'minus',
     expand: 'plus',

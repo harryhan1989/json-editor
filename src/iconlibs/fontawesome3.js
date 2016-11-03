@@ -1,4 +1,4 @@
-JSONEditor.defaults.iconlibs.fontawesome3 = JSONEditor.AbstractIconLib.extend({
+JSONEditorSchema.defaults.iconlibs.fontawesome3 = JSONEditorSchema.AbstractIconLib.extend({
   mapping: {
     collapse: 'chevron-down',
     expand: 'chevron-right',

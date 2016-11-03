@@ -1,4 +1,4 @@
-JSONEditor.defaults.editors.arraySelectize = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.arraySelectize = JSONEditorSchema.AbstractEditor.extend({
   build: function() {
     this.title = this.theme.getFormInputLabel(this.getTitle());
 

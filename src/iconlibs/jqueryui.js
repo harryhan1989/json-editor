@@ -1,4 +1,4 @@
-JSONEditor.defaults.iconlibs.jqueryui = JSONEditor.AbstractIconLib.extend({
+JSONEditorSchema.defaults.iconlibs.jqueryui = JSONEditorSchema.AbstractIconLib.extend({
   mapping: {
     collapse: 'triangle-1-s',
     expand: 'triangle-1-e',

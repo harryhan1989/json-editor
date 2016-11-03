@@ -8,7 +8,7 @@ var matchKey = (function () {
   else if (elem.oMatchesSelector) return 'oMatchesSelector';
 })();
 
-JSONEditor.AbstractTheme = Class.extend({
+JSONEditorSchema.AbstractTheme = Class.extend({
   getContainer: function() {
     return document.createElement('div');
   },

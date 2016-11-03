@@ -1,4 +1,4 @@
-JSONEditor.defaults.editors.number = JSONEditor.defaults.editors.string.extend({
+JSONEditorSchema.defaults.editors.number = JSONEditorSchema.defaults.editors.string.extend({
   sanitize: function(value) {
     return (value+"").replace(/[^0-9\.\-eE]/g,'');
   },

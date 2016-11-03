@@ -1,4 +1,4 @@
-JSONEditor.defaults.editors.upload = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.upload = JSONEditorSchema.AbstractEditor.extend({
   getNumColumns: function() {
     return 4;
   },

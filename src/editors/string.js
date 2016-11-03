@@ -1,4 +1,4 @@
-JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.string = JSONEditorSchema.AbstractEditor.extend({
   register: function() {
     this._super();
     if(!this.input) return;
@@ -300,7 +300,7 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
           emoticonsEnabled: false,
           width: '100%',
           height: 300
-        },JSONEditor.plugins.sceditor,self.options.sceditor_options||{});
+        },JSONEditorSchema.plugins.sceditor,self.options.sceditor_options||{});
         
         window.jQuery(self.input).sceditor(options);
         
@@ -324,7 +324,7 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
         this.input.parentNode.insertBefore(this.epiceditor_container,this.input);
         this.input.style.display = 'none';
         
-        options = $extend({},JSONEditor.plugins.epiceditor,{
+        options = $extend({},JSONEditorSchema.plugins.epiceditor,{
           container: this.epiceditor_container,
           clientSideStorage: false
         });
@@ -360,7 +360,7 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
         this.ace_editor.setValue(this.getValue());
         
         // The theme
-        if(JSONEditor.plugins.ace.theme) this.ace_editor.setTheme('ace/theme/'+JSONEditor.plugins.ace.theme);
+        if(JSONEditorSchema.plugins.ace.theme) this.ace_editor.setTheme('ace/theme/'+JSONEditorSchema.plugins.ace.theme);
         // The mode
         mode = window.ace.require("ace/mode/"+mode);
         if(mode) this.ace_editor.getSession().setMode(new mode.Mode());

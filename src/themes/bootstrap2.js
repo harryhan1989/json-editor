@@ -1,4 +1,4 @@
-JSONEditor.defaults.themes.bootstrap2 = JSONEditor.AbstractTheme.extend({
+JSONEditorSchema.defaults.themes.bootstrap2 = JSONEditorSchema.AbstractTheme.extend({
   getRangeInput: function(min, max, step) {
     // TODO: use bootstrap slider
     return this._super(min, max, step);

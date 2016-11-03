@@ -1,23 +1,23 @@
-var JSONEditor = function(element,options) {
+var JSONEditorSchema = function(element,options) {
   if (!(element instanceof Element)) {
     throw new Error('element should be an instance of Element');
   }
-  options = $extend({},JSONEditor.defaults.options,options||{});
+  options = $extend({},JSONEditorSchema.defaults.options,options||{});
   this.element = element;
   this.options = options;
   this.init();
 };
-JSONEditor.prototype = {
+JSONEditorSchema.prototype = {
   // necessary since we remove the ctor property by doing a literal assignment. Without this
   // the $isplainobject function will think that this is a plain object.
-  constructor: JSONEditor,
+  constructor: JSONEditorSchema,
   init: function() {
     var self = this;
     
     this.ready = false;
 
-    var theme_class = JSONEditor.defaults.themes[this.options.theme || JSONEditor.defaults.theme];
-    if(!theme_class) throw "Unknown theme " + (this.options.theme || JSONEditor.defaults.theme);
+    var theme_class = JSONEditorSchema.defaults.themes[this.options.theme || JSONEditorSchema.defaults.theme];
+    if(!theme_class) throw "Unknown theme " + (this.options.theme || JSONEditorSchema.defaults.theme);
     
     this.schema = this.options.schema;
     this.theme = new theme_class();
@@ -26,13 +26,13 @@ JSONEditor.prototype = {
     this.uuid = 0;
     this.__data = {};
     
-    var icon_class = JSONEditor.defaults.iconlibs[this.options.iconlib || JSONEditor.defaults.iconlib];
+    var icon_class = JSONEditorSchema.defaults.iconlibs[this.options.iconlib || JSONEditorSchema.defaults.iconlib];
     if(icon_class) this.iconlib = new icon_class();
 
     this.root_container = this.theme.getContainer();
     this.element.appendChild(this.root_container);
     
-    this.translate = this.options.translate || JSONEditor.defaults.translate;
+    this.translate = this.options.translate || JSONEditorSchema.defaults.translate;
 
     // Fetch all external refs via ajax
     this._loadExternalRefs(this.schema, function() {
@@ -43,7 +43,7 @@ JSONEditor.prototype = {
       if(self.options.custom_validators) {
         validator_options.custom_validators = self.options.custom_validators;
       }
-      self.validator = new JSONEditor.Validator(self,null,validator_options);
+      self.validator = new JSONEditorSchema.Validator(self,null,validator_options);
       
       // Create the root editor
       var editor_class = self.getEditorClass(self.schema);
@@ -175,10 +175,10 @@ JSONEditor.prototype = {
 
     schema = this.expandSchema(schema);
 
-    $each(JSONEditor.defaults.resolvers,function(i,resolver) {
+    $each(JSONEditorSchema.defaults.resolvers,function(i,resolver) {
       var tmp = resolver(schema);
       if(tmp) {
-        if(JSONEditor.defaults.editors[tmp]) {
+        if(JSONEditorSchema.defaults.editors[tmp]) {
           classname = tmp;
           return false;
         }
@@ -186,9 +186,9 @@ JSONEditor.prototype = {
     });
 
     if(!classname) throw "Unknown editor for schema "+JSON.stringify(schema);
-    if(!JSONEditor.defaults.editors[classname]) throw "Unknown editor "+classname;
+    if(!JSONEditorSchema.defaults.editors[classname]) throw "Unknown editor "+classname;
 
-    return JSONEditor.defaults.editors[classname];
+    return JSONEditorSchema.defaults.editors[classname];
   },
   createEditor: function(editor_class, options) {
     options = $extend({},editor_class.options||{},options);
@@ -223,14 +223,14 @@ JSONEditor.prototype = {
     return this;
   },
   compileTemplate: function(template, name) {
-    name = name || JSONEditor.defaults.template;
+    name = name || JSONEditorSchema.defaults.template;
 
     var engine;
 
     // Specifying a preset engine
     if(typeof name === 'string') {
-      if(!JSONEditor.defaults.templates[name]) throw "Unknown template engine "+name;
-      engine = JSONEditor.defaults.templates[name]();
+      if(!JSONEditorSchema.defaults.templates[name]) throw "Unknown template engine "+name;
+      engine = JSONEditorSchema.defaults.templates[name]();
 
       if(!engine) throw "Template engine "+name+" missing required library.";
     }
@@ -585,7 +585,7 @@ JSONEditor.prototype = {
   }
 };
 
-JSONEditor.defaults = {
+JSONEditorSchema.defaults = {
   themes: {},
   templates: {},
   iconlibs: {},

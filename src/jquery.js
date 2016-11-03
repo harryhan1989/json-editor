@@ -4,7 +4,7 @@
 (function() {
   if(window.jQuery || window.Zepto) {
     var $ = window.jQuery || window.Zepto;
-    $.jsoneditor = JSONEditor.defaults;
+    $.jsoneditor = JSONEditorSchema.defaults;
     
     $.fn.jsoneditor = function(options) {
       var self = this;
@@ -46,7 +46,7 @@
         }
         
         // Create editor
-        editor = new JSONEditor(this.get(0),options);
+        editor = new JSONEditorSchema(this.get(0),options);
         this.data('jsoneditor',editor);
         
         // Setup event listeners

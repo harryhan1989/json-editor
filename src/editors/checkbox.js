@@ -1,4 +1,4 @@
-JSONEditor.defaults.editors.checkbox = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.checkbox = JSONEditorSchema.AbstractEditor.extend({
   setValue: function(value,initial) {
     this.value = !!value;
     this.input.checked = this.value;

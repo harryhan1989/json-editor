@@ -1,5 +1,5 @@
 // Multiple Editor (for when `type` is an array)
-JSONEditor.defaults.editors.multiple = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.multiple = JSONEditorSchema.AbstractEditor.extend({
   register: function() {
     if(this.editors) {
       for(var i=0; i<this.editors.length; i++) {
@@ -208,7 +208,7 @@ JSONEditor.defaults.editors.multiple = JSONEditor.AbstractEditor.extend({
         }
       }
 
-      self.validators[i] = new JSONEditor.Validator(self.jsoneditor,schema,validator_options);
+      self.validators[i] = new JSONEditorSchema.Validator(self.jsoneditor,schema,validator_options);
     });
 
     this.switchEditor(0);

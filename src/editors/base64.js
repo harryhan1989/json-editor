@@ -1,4 +1,4 @@
-JSONEditor.defaults.editors.base64 = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.base64 = JSONEditorSchema.AbstractEditor.extend({
   getNumColumns: function() {
     return 4;
   },

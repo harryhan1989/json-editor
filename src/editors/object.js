@@ -1,4 +1,4 @@
-JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
+JSONEditorSchema.defaults.editors.object = JSONEditorSchema.AbstractEditor.extend({
   getDefault: function() {
     return $extend({},this.schema["default"] || {});
   },
