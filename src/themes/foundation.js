@@ -44,7 +44,7 @@ JSONEditorSchema.defaults.themes.foundation = JSONEditorSchema.AbstractTheme.ext
   getIndentedPanel: function() {
     var el = document.createElement('div');
     el.className = 'panel';
-    el.style.paddingBottom = 0;
+    //el.style.paddingBottom = 0;
     return el;
   },
   getHeaderButtonHolder: function() {

@@ -48,7 +48,7 @@ JSONEditorSchema.defaults.themes.bootstrap2 = JSONEditorSchema.AbstractTheme.ext
   getIndentedPanel: function() {
     var el = document.createElement('div');
     el.className = 'well well-small';
-    el.style.paddingBottom = 0;
+    //el.style.paddingBottom = 0;
     return el;
   },
   getFormInputDescription: function(text) {
