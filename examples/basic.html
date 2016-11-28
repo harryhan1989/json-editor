@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>Basic JSON Editor Example</title>
-    <script src="../dist/jsoneditor.js"></script>
+    <script src="../dist/JSONEditor.js"></script>
   </head>
   <body>
     <h1>Basic JSON Editor Example</h1>
@@ -13,7 +13,7 @@
     
     <script>
       // Initialize the editor with a JSON schema
-      var editor = new JSONEditor(document.getElementById('editor_holder'),{
+      var editor = new JSONEditorSchema(document.getElementById('editor_holder'),{
         schema: {
           type: "object",
           title: "Car",

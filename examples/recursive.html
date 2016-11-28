@@ -15,7 +15,7 @@
     <script src='//cdn.jsdelivr.net/sceditor/1.4.3/jquery.sceditor.min.js'></script>
     <script src='//cdn.jsdelivr.net/sceditor/1.4.3/plugins/xhtml.js'></script>
 
-    <script src="../dist/jsoneditor.js"></script>
+    <script src="../dist/JSONEditor.js"></script>
 </head>
 <body>
 <div class='container'>
@@ -50,12 +50,12 @@
 </div>
 
 <script>
-    JSONEditor.defaults.theme = 'bootstrap3';
-    JSONEditor.defaults.iconlib = 'fontawesome4';
-    JSONEditor.plugins.sceditor.style = "//cdn.jsdelivr.net/sceditor/1.4.3/jquery.sceditor.default.min.css";
+    JSONEditorSchema.defaults.theme = 'bootstrap3';
+    JSONEditorSchema.defaults.iconlib = 'fontawesome4';
+    JSONEditorSchema.plugins.sceditor.style = "//cdn.jsdelivr.net/sceditor/1.4.3/jquery.sceditor.default.min.css";
 
     // Initialize the editor
-    var editor = new JSONEditor(document.getElementById('editor_holder'),{
+    var editor = new JSONEditorSchema(document.getElementById('editor_holder'),{
         // The schema for the editor
         schema: {
             title: "Person",

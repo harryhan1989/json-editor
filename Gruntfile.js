@@ -96,7 +96,7 @@ module.exports = function(grunt) {
                     baseDir: "./"
                 },
                 ports: {
-                    min: 6000,
+                    min: 6001,
                     max: 6100
                 }
             }
